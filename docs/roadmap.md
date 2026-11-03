@@ -145,7 +145,7 @@ Each milestone lists **Build**, **Done when**, and **Decide first** (owner input
 - Pages build works.
 
 **Decided**
-- Camera: right-drag orbit, wheel zoom.
+- Camera: right-drag orbit, wheel zoom. Tab toggles pointer-lock mouse look (added after M2).
 - Platform: desktop keyboard + mouse for MVP.
 
 **Built**
