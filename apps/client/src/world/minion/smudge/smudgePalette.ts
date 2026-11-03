@@ -1,8 +1,8 @@
 // Colors sampled from the Smudge illustration.
 
 export const smudgePalette = {
-	fur: '#cdd7da',
-	furShade: '#b9c4c9',
+	fur: '#c4cfd5',
+	furShade: '#a9b6bf',
 	white: '#fbfaff',
 	earInner: '#f2a9bc',
 	mohawk: '#3f2554',

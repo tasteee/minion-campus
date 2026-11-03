@@ -32,7 +32,7 @@ Layout: `apps/client`, `packages/sim`, `packages/content`.
 
 Sim map: tuning in `sim/src/config.ts` · state types in `sim/src/types.ts` · day pipeline in `sim/src/day/advanceDay.ts` (one file per phase) · care actions in `sim/src/care` · test helpers in `sim/src/test/testHelpers.ts`. Sim functions never mutate input; they return `{ nextState, ... }`.
 
-Client map: sim state lives in `client/src/state/gameStore.svelte.ts`; UI calls `state/gameActions.ts` only · saves in `client/src/persistence` · campus layout in `scenes/campus/campusLayout.ts` · toon look (`ToonMaterial`, `Ink`, palette) in `world/toon` · equipment models in `world/equipment` (preview with `?preview=<id>`) · minion look/behavior in `world/minion`; hand-built rigged species live in `world/minion/<species>/` (rig math in `*Rig.ts`, e.g. Smudge) · `?debug` exposes `window.campusDebug` for browser tests.
+Client map: sim state lives in `client/src/state/gameStore.svelte.ts`; UI calls `state/gameActions.ts` only · saves in `client/src/persistence` · campus layout in `scenes/campus/campusLayout.ts` · toon look (`ToonMaterial`, `Ink`, palette) in `world/toon` · equipment models in `world/equipment` (preview with `?preview=<id>`) · minion look/behavior in `world/minion`; hand-built rigged species live in `world/minion/<species>/` (rig math in `*Rig.ts`, sculpted parts in `*Sculpt.ts` via `world/sculpt` distance fields + Surface Nets, painted face decal in `*Face.ts`) · `?debug` exposes `window.campusDebug` for browser tests.
 
 ## Code style
 
