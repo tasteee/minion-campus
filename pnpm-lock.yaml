@@ -57,7 +57,11 @@ importers:
         specifier: 8.3.5
         version: 8.3.5
 
-  packages/content: {}
+  packages/content:
+    devDependencies:
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/sim:
     devDependencies:
