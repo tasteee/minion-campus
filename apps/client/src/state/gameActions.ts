@@ -1,4 +1,3 @@
-import { species } from '@minion-campus/content'
 import type { ActivityAssignmentT, CareActionIdT } from '@minion-campus/sim'
 import { addNewMinion, advanceDay, assignActivity, createNewGame, performCareAction } from '@minion-campus/sim'
 import { backupUnreadableSave, loadGame, parseSaveFile } from '../persistence/saveGame'
@@ -8,16 +7,13 @@ import { requireGame, setGame, setGameAndSaveNow } from './gameStore.svelte'
 
 const createSeed = () => crypto.getRandomValues(new Uint32Array(1))[0] ?? Date.now()
 
-// Placeholder starter until the questionnaire (M5): a random placeholder species.
-const pickStarterSpeciesId = (seed: number) => {
-	const speciesIds = Object.keys(species)
-	return speciesIds[seed % speciesIds.length] ?? 'mochling'
-}
+// Provisional starter until the questionnaire (M5): every new campus begins with a Smudge.
+const STARTER_SPECIES_ID = 'smudge'
 
 export const startNewGame = async () => {
 	const seed = createSeed()
 	const freshGame = createNewGame(seed)
-	const withStarter = addNewMinion(freshGame, { speciesId: pickStarterSpeciesId(seed), origin: 'starter' })
+	const withStarter = addNewMinion(freshGame, { speciesId: STARTER_SPECIES_ID, origin: 'starter' })
 	await setGameAndSaveNow(withStarter.nextState)
 }
 

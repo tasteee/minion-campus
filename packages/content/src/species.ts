@@ -29,6 +29,16 @@ export const species: Record<string, SpeciesT> = {
 		baseStats: { strength: 20, intelligence: 25, speed: 20, defense: 30, endurance: 30, accuracy: 20 },
 		hueRange: { min: 300, max: 360 }
 	},
+	smudge: {
+		id: 'smudge',
+		name: 'Smudge',
+		// Design from the owner. Rarity, lifespan and stats are provisional.
+		rarity: 'uncommon',
+		isPlaceholder: false,
+		lifespanDays: { min: 840, max: 1260 },
+		baseStats: { strength: 18, intelligence: 28, speed: 32, defense: 18, endurance: 24, accuracy: 30 },
+		hueRange: { min: 190, max: 210 }
+	},
 	bramblet: {
 		id: 'bramblet',
 		name: 'Bramblet',

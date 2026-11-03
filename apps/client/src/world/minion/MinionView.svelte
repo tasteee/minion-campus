@@ -13,6 +13,7 @@
 	import { createBehaviorState, faceToward, getWorkSpot, leaveWork, updateTowardWork, updateWander } from './minionBehavior'
 	import { getMinionLook } from './minionLook'
 	import MinionModel from './MinionModel.svelte'
+	import SmudgeModel from './smudge/SmudgeModel.svelte'
 	import { tickMinionHop } from './minionReactions'
 
 	type PropsT = { minionId: string }
@@ -21,6 +22,8 @@
 	const minion = $derived(getGame()?.minions.find((candidate) => candidate.id === props.minionId))
 	const look = $derived(minion ? getMinionLook(minion.id, minion.appearance, minion.lifeStage) : null)
 	const entityId = $derived(`minion:${props.minionId}`)
+	// Rigged species animate their own joints; the rest use the generic body bounce.
+	const isSmudge = $derived(minion?.speciesId === 'smudge')
 	const behavior = createBehaviorState()
 	const entityPosition = { x: behavior.x, y: 0, z: behavior.z }
 	const workPoses: PoseT[] = ['lift', 'think', 'run', 'sleep']
@@ -100,7 +103,8 @@
 		updateBehavior(deltaSeconds)
 		rootGroup.position.set(behavior.x, behavior.y, behavior.z)
 		rootGroup.rotation.y = behavior.facing
-		animateBody(bodyGroup, deltaSeconds)
+		if (isSmudge) bodyGroup.position.y = tickMinionHop(props.minionId, deltaSeconds)
+		if (!isSmudge) animateBody(bodyGroup, deltaSeconds)
 		entityPosition.x = behavior.x
 		entityPosition.y = behavior.y
 		entityPosition.z = behavior.z
@@ -111,7 +115,12 @@
 	<T.Group bind:ref={rootGroup}>
 		<T.Group scale={look.scale}>
 			<T.Group bind:ref={bodyGroup}>
-				<MinionModel {look} />
+				{#if isSmudge}
+					<SmudgeModel getPose={() => behavior.pose} />
+				{/if}
+				{#if !isSmudge}
+					<MinionModel {look} />
+				{/if}
 			</T.Group>
 		</T.Group>
 		<FocusMarker {entityId} height={look.scale * 1.45} />
