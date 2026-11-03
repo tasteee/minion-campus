@@ -209,7 +209,7 @@ Each milestone lists **Build**, **Done when**, and **Decide first** (owner input
 - Need ranges (proposal: 0–100) and daily decay rates.
 - Lifespan range for common species (proposal: ~2–4 in-game years).
 - Care-burn formula shape.
-- Month names (proposal: placeholder `Spring 1`, `Spring 2`… until named).
+- ~~Month names~~ **Decided:** normal names, January–December. Seasons follow the northern calendar: Spring = Mar–May, Summer = Jun–Aug, Autumn = Sep–Nov, Winter = Dec–Feb. 28 days each.
 
 ### M4 — Campus gameplay (`§20` Step 4)
 
@@ -309,5 +309,6 @@ Every placeholder number or design call made during development goes here, so no
 | 2026-11-03 | Player movement | Walk 4, run 7.5, jump 6, gravity -20 (units/s) | `apps/client/src/world/player/playerState.ts` |
 | 2026-11-03 | Camera | Pitch 0.15–1.25 rad, distance 3.5–14, start 8 | `apps/client/src/world/camera/orbitState.ts` |
 | 2026-11-03 | Controls | Space = hop (not in GDD; easy to remove) | `apps/client/src/world/input/bindings.ts` |
+| 2026-11-03 | Calendar | New game starts March 1 (first day of Spring) | `packages/sim` (M3) |
 | 2026-11-03 | Interaction | Radius: NPC 2.2, minion 1.8, object 1.8 | `apps/client/src/world/npc`, `world/minion`, `world/objects` |
 | 2026-11-03 | Placeholder content | Pip (greeter), sign, Mochi + their lines | `packages/content/src`, `apps/client/src/world/minion/placeholderMinions.ts` |
