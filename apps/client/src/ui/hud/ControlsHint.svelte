@@ -13,7 +13,7 @@
 	<span class="controls-hint-item"><b>Space</b> hop</span>
 	<span class="controls-hint-item"><b>E</b> interact</span>
 	{#if !isMouseLook}
-		<span class="controls-hint-item"><b>Right-drag</b> look</span>
+		<span class="controls-hint-item"><b>Drag</b> look</span>
 	{/if}
 	{#if isMouseLook}
 		<span class="controls-hint-item"><b>Mouse</b> look</span>

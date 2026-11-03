@@ -1,7 +1,7 @@
 import { interactionState } from '../interaction/interactionState.svelte'
 import { cameraModeState } from './cameraMode.svelte'
 
-// Third-person orbit camera. Right-drag or mouse look orbits, wheel zooms.
+// Third-person orbit camera. Left/right drag or mouse look orbits, wheel zooms.
 // Per-frame data: plain mutable object, not reactive.
 
 export const orbitSettings = {
@@ -20,13 +20,19 @@ export const orbitState = {
 	yaw: 0,
 	pitch: 0.45,
 	distance: 8,
+	isPointerHeld: false,
 	isDragging: false,
+	pressX: 0,
+	pressY: 0,
 	lastPointerX: 0,
 	lastPointerY: 0
 }
 
 const LEFT_MOUSE_BUTTON = 0
 const RIGHT_MOUSE_BUTTON = 2
+
+// A left press that moves less than this stays a click (future click-to-interact).
+const DRAG_THRESHOLD_PIXELS = 5
 
 let controlledElement: HTMLElement | null = null
 
@@ -77,18 +83,30 @@ const handlePointerLockChange = () => {
 	cameraModeState.mode = 'drag'
 }
 
+const isDragButton = (button: number) => button === LEFT_MOUSE_BUTTON || button === RIGHT_MOUSE_BUTTON
+
 const handlePointerDown = (event: PointerEvent) => {
 	const isMouseLookWaiting = cameraModeState.mode === 'mouseLook' && !cameraModeState.isPointerLocked
 	if (isMouseLookWaiting && event.button === LEFT_MOUSE_BUTTON) return requestMouseLook()
-	if (cameraModeState.mode !== 'drag' || event.button !== RIGHT_MOUSE_BUTTON) return
+	if (cameraModeState.mode !== 'drag' || !isDragButton(event.button)) return
 	const target = event.currentTarget as HTMLElement
 	target.setPointerCapture(event.pointerId)
-	orbitState.isDragging = true
+	orbitState.isPointerHeld = true
+	orbitState.isDragging = event.button === RIGHT_MOUSE_BUTTON
+	orbitState.pressX = event.clientX
+	orbitState.pressY = event.clientY
 	orbitState.lastPointerX = event.clientX
 	orbitState.lastPointerY = event.clientY
 }
 
+const hasPassedDragThreshold = (event: PointerEvent) => {
+	const distance = Math.hypot(event.clientX - orbitState.pressX, event.clientY - orbitState.pressY)
+	return distance >= DRAG_THRESHOLD_PIXELS
+}
+
 const handlePointerMove = (event: PointerEvent) => {
+	if (!orbitState.isPointerHeld) return
+	if (!orbitState.isDragging && hasPassedDragThreshold(event)) orbitState.isDragging = true
 	if (!orbitState.isDragging) return
 	const deltaX = event.clientX - orbitState.lastPointerX
 	const deltaY = event.clientY - orbitState.lastPointerY
@@ -103,7 +121,8 @@ const handleMouseLookMove = (event: MouseEvent) => {
 }
 
 const handlePointerUp = (event: PointerEvent) => {
-	if (event.button !== RIGHT_MOUSE_BUTTON) return
+	if (!isDragButton(event.button)) return
+	orbitState.isPointerHeld = false
 	orbitState.isDragging = false
 }
 
@@ -138,6 +157,7 @@ export const attachOrbitControls = (element: HTMLElement) => {
 		document.removeEventListener('pointerlockchange', handlePointerLockChange)
 		window.removeEventListener('keydown', handleKeyDown)
 		releaseMouseLook()
+		orbitState.isPointerHeld = false
 		orbitState.isDragging = false
 		controlledElement = null
 	}
