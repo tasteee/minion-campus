@@ -1,0 +1,19 @@
+:root {
+	--color-ink: #3b2f4a;
+	--color-ink-soft: #6b5d7a;
+	--color-paper: #fff8ee;
+	--color-sky: #bfe3f2;
+	--color-accent: #ff9fb6;
+
+	--font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+	--font-size-small: 13px;
+	--font-size-body: 15px;
+
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+
+	--radius-medium: 12px;
+	--radius-small: 6px;
+}
