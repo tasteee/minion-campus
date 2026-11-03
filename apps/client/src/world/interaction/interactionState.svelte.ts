@@ -1,7 +1,7 @@
 // Interaction mode drives input routing and player lock.
 // Changes rarely, so it is safe as reactive state.
 
-export type InteractionModeT = 'free' | 'dialogue' | 'minionMenu'
+export type InteractionModeT = 'free' | 'dialogue' | 'minionPanel' | 'modal'
 
 type InteractionStateT = {
 	mode: InteractionModeT

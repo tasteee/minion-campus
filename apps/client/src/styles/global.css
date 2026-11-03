@@ -22,7 +22,7 @@ body {
 
 .interaction-key,
 .dialogue-key,
-.minion-menu-key {
+.minion-panel-key {
 	display: inline-grid;
 	place-items: center;
 	min-width: 22px;

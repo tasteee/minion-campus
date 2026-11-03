@@ -75,7 +75,7 @@
 
 <T.Group>
 	{#each layers as layer (layer.height)}
-		<T.Mesh geometry={layer.geometry} position.y={layer.height} rotation.x={Math.PI / 2} receiveShadow>
+		<T.Mesh geometry={layer.geometry} position.y={layer.height} rotation.x={Math.PI / 2}>
 			<ToonMaterial color={layer.color} />
 			<Ink thickness={0.02} />
 		</T.Mesh>

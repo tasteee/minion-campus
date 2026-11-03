@@ -1,4 +1,5 @@
-const TOAST_DURATION_MS = 2600
+const MIN_TOAST_MS = 2600
+const MS_PER_CHARACTER = 55
 
 type ToastStateT = {
 	message: string
@@ -16,5 +17,5 @@ export const showToast = (message: string) => {
 
 	hideTimeoutId = setTimeout(() => {
 		toastState.message = ''
-	}, TOAST_DURATION_MS)
+	}, Math.max(MIN_TOAST_MS, message.length * MS_PER_CHARACTER))
 }

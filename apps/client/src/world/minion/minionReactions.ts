@@ -1,4 +1,4 @@
-// Per-frame reaction timers, keyed by minion id. View-only feedback.
+// Per-frame hop timers, keyed by minion id. View-only feedback after care.
 
 const HOP_DURATION_SECONDS = 0.45
 

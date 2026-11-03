@@ -12,9 +12,9 @@
 | M0 | Vision docs + roadmap | ✅ Done |
 | M1 | Project foundation | ✅ Done |
 | M2 | World interaction | ✅ Done |
-| M3 | Simulation foundation | ✅ Done — awaiting review |
-| M4 | Campus gameplay | ⬜ Next — awaiting approval |
-| M5 | Starter experience + town | ⬜ |
+| M3 | Simulation foundation | ✅ Done |
+| M4 | Campus gameplay | ✅ Done — awaiting review |
+| M5 | Starter experience + town | ⬜ Next — awaiting approval |
 | M6 | Breeding + Beckoning | ⬜ |
 | M7 | Tournament | ⬜ |
 | M8 | MVP polish + deploy | ⬜ |
@@ -247,9 +247,30 @@ Each milestone lists **Build**, **Done when**, and **Decide first** (owner input
 **Done when**
 - Full day loop works on campus with one minion and survives a page refresh.
 
-**Decide first**
-- Daily action budget: unlimited care actions or limited? (proposal: unlimited care, one assignment per minion per day)
-- Equipment list and effects.
+**Decided**
+- Care is unlimited, but each kind has a daily cap (pet 3, play 2; feeding stops when full). Extra care just gets "content for today".
+- One assignment per minion. Assignments carry over to the next day (routines).
+- MVP equipment: Exercise Machine (STR), Chessboard (INT, 2 minions), Running Track (SPD, 2 minions), Nap Mat (deep rest). Models built from the owner's illustrations.
+
+**Built**
+- Sim: equipment content, `campus.equipment`, `plannedAssignments`, `assignActivity` with capacity checks, `getEndDayReview`, daily care caps. Schema v2.
+- Saves: IndexedDB (`apps/client/src/persistence`), autosave 400 ms after any change, immediate save after End Day, export/import JSON, unreadable saves kept as backups.
+- State: `state/gameStore.svelte.ts` holds sim state; `state/gameActions.ts` is the only path from UI to sim.
+- Campus scene: cottage, trees, flowers, paths, edge walls, Pip + sign, 4 equipment pieces with colliders and "Look at" info.
+- Toon style: `world/toon` (3-step toon ramp + ink outlines). Applied to equipment, minions, environment, player, NPC.
+- Equipment models: `world/equipment/*Model.svelte`. Dev viewer at `?preview=exerciseMachine|chessboard|runningTrack|napMat`.
+- Procedural minions from genes (`world/minion/minionLook.ts`): size, chunkiness, colors, ears (pointy/floppy), horns, tail, arms, spots/stripes/patches, life-stage size.
+- Behavior (view-only): wander, play-hop, walk to assigned equipment and lift / think / run laps / sleep; rest = nap on the lawn; stops and faces you when you approach.
+- UI: minion panel (needs, bond, personality hints, traits, care with daily counts, assignment, stats), HUD (date, season, coins, food, Menu), End Day review with gentle warnings, morning report, game menu (export/import/new campus).
+- Starter: one random placeholder minion until the questionnaire (M5).
+- `?debug` exposes `window.campusDebug` for automated browser tests only.
+
+**Unfinished / notes**
+- No pathfinding: minions walk straight lines and can pass through equipment.
+- Minions have no physics colliders (you can walk through them).
+- Food is a flat 30 to start; buying more comes with the shop (M5).
+- Chess works solo for now; no special two-player bonus yet.
+- Dead minions are simply not shown; a memorial / remains flow comes with M6.
 
 ### M5 — Starter experience + town (`§20` Step 5)
 
@@ -334,5 +355,10 @@ Every placeholder number or design call made during development goes here, so no
 | 2026-11-03 | Species | Mochling + Bramblet are placeholders (`isPlaceholder: true`) | `packages/content/src/species.ts` |
 | 2026-11-03 | Personalities/traits | Modifier values per personality/trait | `packages/content/src/personalities.ts`, `traits.ts` |
 | 2026-11-03 | Stats | Range 1–999, base ~20–30, potential 0.7–1.3× | `packages/sim/src/config.ts`, `content/species.ts` |
+| 2026-11-03 | Care caps | Pet 3/day, play 2/day | `packages/sim/src/config.ts` |
+| 2026-11-03 | Equipment | Effects, capacity, prices for the 4 pieces | `packages/content/src/equipment.ts` |
+| 2026-11-03 | New game | 500 coins, 30 food, all 4 equipment pieces, 1 random placeholder starter | `sim/src/config.ts`, `client/src/state/gameActions.ts` |
+| 2026-11-03 | Campus layout | Equipment, house, tree, path positions | `apps/client/src/scenes/campus/campusLayout.ts` |
+| 2026-11-03 | Minion look | Base scale 1.35, life-stage sizes, gene → shape mapping | `apps/client/src/world/minion/minionLook.ts` |
 | 2026-11-03 | Interaction | Radius: NPC 2.2, minion 1.8, object 1.8 | `apps/client/src/world/npc`, `world/minion`, `world/objects` |
 | 2026-11-03 | Placeholder content | Pip (greeter), sign, Mochi + their lines | `packages/content/src`, `apps/client/src/world/minion/placeholderMinions.ts` |

@@ -1,14 +1,13 @@
-// Scene manager state machine. M1 only has the test scene.
-// Campus, town and arena join in later milestones.
+// Scene manager state machine. Town and arena join in later milestones.
 
-export type SceneIdT = 'test'
+export type SceneIdT = 'campus'
 
 type SceneManagerStateT = {
 	currentSceneId: SceneIdT
 }
 
 export const sceneManager = $state<SceneManagerStateT>({
-	currentSceneId: 'test'
+	currentSceneId: 'campus'
 })
 
 export const goToScene = (sceneId: SceneIdT) => {
