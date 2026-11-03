@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cloneState } from '../cloneState'
 import { getCalendarDate } from '../calendar'
+import { assignActivity } from '../assignments'
 import { findMinion } from '../gameState'
 import { createGameWithMinion, goodCare, runDays } from '../test/testHelpers'
 import { advanceDay, dayPhases } from './advanceDay'
@@ -37,10 +38,35 @@ describe('advanceDay', () => {
 		expect(after?.daysLived).toBe(1)
 	})
 
+	it('uses the planned assignments by default and keeps them for tomorrow', () => {
+		const setup = createGameWithMinion()
+		const assigned = assignActivity(setup.nextState, setup.minionId, { activity: 'equipment', equipmentInstanceId: 'equipment-1' })
+		const before = findMinion(assigned.nextState, setup.minionId)?.stats.strength ?? 0
+		const result = advanceDay(assigned.nextState)
+		expect(findMinion(result.nextState, setup.minionId)?.stats.strength).toBeGreaterThan(before)
+		expect(result.nextState.plannedAssignments[setup.minionId]).toEqual(assigned.nextState.plannedAssignments[setup.minionId])
+	})
+
+	it('treats an assignment to missing equipment as free time', () => {
+		const setup = createGameWithMinion()
+		const result = advanceDay(setup.nextState, { [setup.minionId]: { activity: 'equipment', equipmentInstanceId: 'nope' } })
+		expect(result.report.entries.some((entry) => entry.kind === 'training')).toBe(false)
+	})
+
+	it('a day on the nap mat restores more energy than resting on the grass', () => {
+		const setup = createGameWithMinion()
+		const tired = cloneState(setup.nextState)
+		const tiredMinion = findMinion(tired, setup.minionId)
+		if (tiredMinion) tiredMinion.needs.energy = 10
+		const grass = findMinion(advanceDay(tired, { [setup.minionId]: { activity: 'rest' } }).nextState, setup.minionId)
+		const mat = findMinion(advanceDay(tired, { [setup.minionId]: { activity: 'equipment', equipmentInstanceId: 'equipment-4' } }).nextState, setup.minionId)
+		expect(mat?.needs.energy ?? 0).toBeGreaterThan(grass?.needs.energy ?? 0)
+	})
+
 	it('training raises the chosen stat and reports it', () => {
 		const setup = createGameWithMinion()
 		const before = findMinion(setup.nextState, setup.minionId)?.stats.strength ?? 0
-		const result = advanceDay(setup.nextState, { [setup.minionId]: { activity: 'train', stat: 'strength' } })
+		const result = advanceDay(setup.nextState, { [setup.minionId]: { activity: 'equipment', equipmentInstanceId: 'equipment-1' } })
 		const after = findMinion(result.nextState, setup.minionId)?.stats.strength ?? 0
 		expect(after).toBeGreaterThan(before)
 		expect(result.report.entries.some((entry) => entry.kind === 'training')).toBe(true)
@@ -51,7 +77,7 @@ describe('advanceDay', () => {
 		const tiredState = cloneState(setup.nextState)
 		const tiredMinion = findMinion(tiredState, setup.minionId)
 		if (tiredMinion) tiredMinion.needs.energy = 5
-		const train = { [setup.minionId]: { activity: 'train' as const, stat: 'speed' as const } }
+		const train = { [setup.minionId]: { activity: 'equipment' as const, equipmentInstanceId: 'equipment-3' } }
 		const freshGain = (findMinion(advanceDay(setup.nextState, train).nextState, setup.minionId)?.stats.speed ?? 0) - (findMinion(setup.nextState, setup.minionId)?.stats.speed ?? 0)
 		const tiredResult = advanceDay(tiredState, train)
 		const tiredGain = (findMinion(tiredResult.nextState, setup.minionId)?.stats.speed ?? 0) - (tiredMinion?.stats.speed ?? 0)

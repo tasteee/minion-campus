@@ -9,7 +9,7 @@ import type { DailyCareCountsT, GameStateT, MinionT, NeedsT } from '../types'
 
 export type CareActionIdT = 'feed' | 'pet' | 'play'
 
-export type CareFailureReasonT = 'notFound' | 'notAlive' | 'noFood' | 'notHungry'
+export type CareFailureReasonT = 'notFound' | 'notAlive' | 'noFood' | 'notHungry' | 'dailyLimit'
 
 export type CareOutcomeT = {
 	action: CareActionIdT
@@ -74,9 +74,17 @@ const careCountKeys: Record<CareActionIdT, keyof DailyCareCountsT> = {
 	play: 'played'
 }
 
-const getBlockingReason = (state: GameStateT, minion: MinionT | undefined, action: CareActionIdT) => {
+const hasReachedDailyLimit = (minion: MinionT, action: CareActionIdT) => {
+	const limits = simConfig.careDailyLimits
+	if (action === 'pet') return minion.todayCare.petted >= limits.pet
+	if (action === 'play') return minion.todayCare.played >= limits.play
+	return false
+}
+
+const getBlockingReason = (state: GameStateT, minion: MinionT | undefined, action: CareActionIdT): CareFailureReasonT | null => {
 	if (!minion) return 'notFound'
 	if (!minion.isAlive) return 'notAlive'
+	if (hasReachedDailyLimit(minion, action)) return 'dailyLimit'
 	if (action !== 'feed') return null
 	if (state.inventory.food <= 0) return 'noFood'
 	if (minion.needs.hunger < simConfig.hunger.refuseBelow) return 'notHungry'

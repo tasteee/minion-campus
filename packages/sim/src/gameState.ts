@@ -13,6 +13,10 @@ export const createNewGame = (seed: number, headmasterName = 'Headmaster'): Game
 	nextMinionNumber: 1,
 	money: simConfig.newGame.money,
 	inventory: { food: simConfig.newGame.food },
+	campus: {
+		equipment: simConfig.newGame.equipmentIds.map((equipmentId, index) => ({ id: `equipment-${index + 1}`, equipmentId }))
+	},
+	plannedAssignments: {},
 	headmaster: {
 		name: headmasterName,
 		daysAsHeadmaster: 0,

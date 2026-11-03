@@ -1,4 +1,4 @@
-import type { StatBlockT, StatIdT } from '@minion-campus/content'
+import type { StatBlockT } from '@minion-campus/content'
 import type { DayReportT } from './day/report'
 
 // Plain serializable game state. The sim is the only source of truth.
@@ -89,6 +89,15 @@ export type InventoryT = {
 	food: number
 }
 
+export type EquipmentInstanceT = {
+	id: string
+	equipmentId: string
+}
+
+export type CampusT = {
+	equipment: EquipmentInstanceT[]
+}
+
 export type GameStateT = {
 	schemaVersion: number
 	rngState: number
@@ -96,6 +105,9 @@ export type GameStateT = {
 	nextMinionNumber: number
 	money: number
 	inventory: InventoryT
+	campus: CampusT
+	// Kept across days so routines carry over. One per minion.
+	plannedAssignments: AssignmentsT
 	headmaster: HeadmasterT
 	minions: MinionT[]
 	lastReport: DayReportT | null
@@ -105,7 +117,7 @@ export type ActivityAssignmentT =
 	| { activity: 'idle' }
 	| { activity: 'rest' }
 	| { activity: 'play' }
-	| { activity: 'train'; stat: StatIdT }
+	| { activity: 'equipment'; equipmentInstanceId: string }
 
 // Minion id → assignment for the day being ended. Missing = idle.
 export type AssignmentsT = Record<string, ActivityAssignmentT>
