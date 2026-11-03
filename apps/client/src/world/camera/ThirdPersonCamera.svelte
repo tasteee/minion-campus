@@ -3,7 +3,9 @@
 	import { onMount } from 'svelte'
 	import { Vector3, type PerspectiveCamera } from 'three'
 	import { playerState } from '../player/playerState'
-	import { attachOrbitControls, orbitSettings, orbitState } from './orbitState'
+	import { interactionState } from '../interaction/interactionState.svelte'
+	import { cameraModeState } from './cameraMode.svelte'
+	import { attachOrbitControls, orbitSettings, orbitState, releaseMouseLook, requestMouseLook } from './orbitState'
 
 	const threlte = useThrelte()
 	const smoothedTarget = new Vector3()
@@ -12,6 +14,14 @@
 	let hasSnappedToPlayer = false
 
 	onMount(() => attachOrbitControls(threlte.renderer.domElement))
+
+	// Free the mouse for dialogue and menus; take it back after, if still in mouse look.
+	$effect(() => {
+		const isFree = interactionState.mode === 'free'
+		const wantsMouseLook = cameraModeState.mode === 'mouseLook'
+		if (!isFree) return releaseMouseLook()
+		if (wantsMouseLook) requestMouseLook()
+	})
 
 	const updateDesiredTarget = () => {
 		const position = playerState.position

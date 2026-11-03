@@ -18,4 +18,4 @@ pnpm check      # typecheck all packages
 pnpm build      # production build → apps/client/dist
 ```
 
-Controls: **WASD** move · **Shift** run · **Space** hop · **Right-drag** look · **Wheel** zoom.
+Controls: **WASD** move · **Shift** run · **Space** hop · **Drag** (left or right) look · **Tab** toggle mouse look · **Wheel** zoom.
