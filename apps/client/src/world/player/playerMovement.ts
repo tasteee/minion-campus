@@ -1,6 +1,7 @@
 import { keyBindings } from '../input/bindings'
 import { isAnyKeyPressed } from '../input/keyboard'
 import { getCameraForward, getCameraRight } from '../camera/orbitState'
+import { isPlayerLocked } from '../interaction/interactionState.svelte'
 import { playerSettings, playerState } from './playerState'
 
 type PlanarVectorT = { x: number; z: number }
@@ -13,6 +14,7 @@ const getAxis = (positiveKeys: readonly string[], negativeKeys: readonly string[
 
 // Direction the player wants to move on the ground, relative to the camera.
 export const getDesiredDirection = (): PlanarVectorT => {
+	if (isPlayerLocked()) return { x: 0, z: 0 }
 	const forwardAxis = getAxis(keyBindings.forward, keyBindings.backward)
 	const rightAxis = getAxis(keyBindings.right, keyBindings.left)
 	const forward = getCameraForward()
@@ -31,7 +33,7 @@ export const getMoveSpeed = () => {
 }
 
 export const updateVerticalSpeed = (deltaSeconds: number) => {
-	const shouldJump = playerState.isGrounded && isAnyKeyPressed(keyBindings.jump)
+	const shouldJump = playerState.isGrounded && !isPlayerLocked() && isAnyKeyPressed(keyBindings.jump)
 
 	if (shouldJump) {
 		playerState.verticalSpeed = playerSettings.jumpSpeed

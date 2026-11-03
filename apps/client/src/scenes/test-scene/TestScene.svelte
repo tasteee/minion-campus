@@ -6,6 +6,11 @@
 	import ThirdPersonCamera from '../../world/camera/ThirdPersonCamera.svelte'
 	import { attachKeyboard } from '../../world/input/keyboard'
 	import { worldPalette } from '../../world/palette'
+	import InteractionSystem from '../../world/interaction/InteractionSystem.svelte'
+	import PlaceholderMinion from '../../world/minion/PlaceholderMinion.svelte'
+	import { placeholderMinions } from '../../world/minion/placeholderMinions'
+	import Npc from '../../world/npc/Npc.svelte'
+	import Signpost from '../../world/objects/Signpost.svelte'
 	import Player from '../../world/player/Player.svelte'
 	import StaticBlock from './StaticBlock.svelte'
 	import { groundSize, testBlocks } from './testSceneLayout'
@@ -54,6 +59,14 @@
 		<StaticBlock {block} />
 	{/each}
 
+	<Npc npcId="pip" position={[3, 0, -3]} bodyColor={worldPalette.npcBody} hatColor={worldPalette.npcHat} />
+	<Signpost objectId="campusSign" position={[-1.5, 0, -6]} />
+
+	{#each placeholderMinions as minion (minion.id)}
+		<PlaceholderMinion {minion} />
+	{/each}
+
 	<Player />
+	<InteractionSystem />
 	<ThirdPersonCamera />
 </World>

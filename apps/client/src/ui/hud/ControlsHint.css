@@ -1,7 +1,7 @@
 .controls-hint {
 	position: absolute;
 	left: var(--space-4);
-	bottom: var(--space-4);
+	top: var(--space-4);
 	display: flex;
 	gap: var(--space-3);
 	padding: var(--space-2) var(--space-3);

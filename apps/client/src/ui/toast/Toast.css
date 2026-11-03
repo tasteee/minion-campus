@@ -1,0 +1,19 @@
+.toast {
+	position: absolute;
+	top: var(--space-5);
+	left: 50%;
+	transform: translateX(-50%);
+	padding: var(--space-2) var(--space-4);
+	background: var(--color-paper);
+	border: 2px solid var(--color-ink);
+	border-radius: var(--radius-large);
+	animation: toast-pop 180ms ease-out;
+	pointer-events: none;
+}
+
+@keyframes toast-pop {
+	from {
+		opacity: 0;
+		transform: translate(-50%, -6px);
+	}
+}

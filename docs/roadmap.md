@@ -10,9 +10,9 @@
 | # | Milestone | Status |
 |---|---|---|
 | M0 | Vision docs + roadmap | ✅ Done |
-| M1 | Project foundation | ✅ Done — awaiting review |
-| M2 | World interaction | ⬜ Next — awaiting approval |
-| M3 | Simulation foundation | ⬜ |
+| M1 | Project foundation | ✅ Done |
+| M2 | World interaction | ✅ Done — awaiting review |
+| M3 | Simulation foundation | ⬜ Next — awaiting approval |
 | M4 | Campus gameplay | ⬜ |
 | M5 | Starter experience + town | ⬜ |
 | M6 | Breeding + Beckoning | ⬜ |
@@ -173,8 +173,19 @@ Each milestone lists **Build**, **Done when**, and **Decide first** (owner input
 - Walk up to an NPC → prompt → dialogue opens and closes.
 - Walk up to a minion → prompt → placeholder action menu.
 
-**Decide first**
-- Dialogue tone/voice for NPCs (proposal: short, warm, whimsical).
+**Built**
+- Miniplex ECS for in-scene entities: `world/ecs/ecsWorld.ts`. Entities register on mount, unregister on destroy.
+- One interaction path: `interactable.target` is `npc` | `minion` | `object`. Nearest-in-radius focus (`world/interaction`).
+- Input router by mode (`free` / `dialogue` / `minionMenu`). Player movement locks outside `free`.
+- Prompt ("E Talk to Pip"), spinning focus marker, NPC/minion turn to face the player.
+- Dialogue data in `packages/content` (nodes, `nextNodeId`, choices). Box UI: E/Space/Enter continue, 1–9 choose, Esc close, mouse works too.
+- Placeholder NPC (Pip), sign object, placeholder minion (Mochi) with Pet/Feed/Play/Check menu → toast + hop.
+- Content integrity tests (dialogue links, NPC/object → dialogue).
+
+**Unfinished / notes**
+- Minion actions are view-only placeholders. Real effects come from the sim (M3/M4).
+- Mochi lives in client placeholder data, not sim state.
+- Dialogue tone used: short, warm, whimsical (provisional).
 
 ### M3 — Simulation foundation (`§20` Step 3)
 
@@ -298,3 +309,5 @@ Every placeholder number or design call made during development goes here, so no
 | 2026-11-03 | Player movement | Walk 4, run 7.5, jump 6, gravity -20 (units/s) | `apps/client/src/world/player/playerState.ts` |
 | 2026-11-03 | Camera | Pitch 0.15–1.25 rad, distance 3.5–14, start 8 | `apps/client/src/world/camera/orbitState.ts` |
 | 2026-11-03 | Controls | Space = hop (not in GDD; easy to remove) | `apps/client/src/world/input/bindings.ts` |
+| 2026-11-03 | Interaction | Radius: NPC 2.2, minion 1.8, object 1.8 | `apps/client/src/world/npc`, `world/minion`, `world/objects` |
+| 2026-11-03 | Placeholder content | Pip (greeter), sign, Mochi + their lines | `packages/content/src`, `apps/client/src/world/minion/placeholderMinions.ts` |
