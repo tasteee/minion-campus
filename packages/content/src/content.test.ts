@@ -35,3 +35,32 @@ describe('npc and object content', () => {
 		Object.values(worldObjects).forEach((object) => expect(dialogueIds).toContain(object.dialogueId))
 	})
 })
+
+describe('minion content', () => {
+	it('keeps ids matching their keys', async () => {
+		const content = await import('./index')
+		const tables = [content.species, content.personalities, content.traits]
+		tables.forEach((table) => {
+			Object.entries(table).forEach((entry) => expect(entry[1].id).toBe(entry[0]))
+		})
+	})
+
+	it('has 12 months of 28 days covering 4 seasons evenly', async () => {
+		const content = await import('./index')
+		const config = content.calendarConfig
+		expect(config.months).toHaveLength(12)
+		const seasonCounts = config.months.reduce<Record<string, number>>((counts, month) => {
+			counts[month.season] = (counts[month.season] ?? 0) + 1
+			return counts
+		}, {})
+		expect(seasonCounts).toEqual({ winter: 3, spring: 3, summer: 3, autumn: 3 })
+	})
+
+	it('gives species valid lifespan ranges', async () => {
+		const content = await import('./index')
+		Object.values(content.species).forEach((entry) => {
+			expect(entry.lifespanDays.min).toBeGreaterThan(0)
+			expect(entry.lifespanDays.max).toBeGreaterThanOrEqual(entry.lifespanDays.min)
+		})
+	})
+})
