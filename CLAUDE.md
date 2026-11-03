@@ -30,6 +30,8 @@ pnpm workspaces · Vite · strict TypeScript · Svelte 5 (runes) · Threlte · T
 
 Layout: `apps/client`, `packages/sim`, `packages/content`.
 
+Sim map: tuning in `sim/src/config.ts` · state types in `sim/src/types.ts` · day pipeline in `sim/src/day/advanceDay.ts` (one file per phase) · care actions in `sim/src/care` · test helpers in `sim/src/test/testHelpers.ts`. Sim functions never mutate input; they return `{ nextState, ... }`.
+
 ## Code style
 
 - Arrow functions only. No `function` declarations. No classes.

@@ -11,9 +11,9 @@
 |---|---|---|
 | M0 | Vision docs + roadmap | ✅ Done |
 | M1 | Project foundation | ✅ Done |
-| M2 | World interaction | ✅ Done — awaiting review |
-| M3 | Simulation foundation | ⬜ Next — awaiting approval |
-| M4 | Campus gameplay | ⬜ |
+| M2 | World interaction | ✅ Done |
+| M3 | Simulation foundation | ✅ Done — awaiting review |
+| M4 | Campus gameplay | ⬜ Next — awaiting approval |
 | M5 | Starter experience + town | ⬜ |
 | M6 | Breeding + Beckoning | ⬜ |
 | M7 | Tournament | ⬜ |
@@ -205,11 +205,31 @@ Each milestone lists **Build**, **Done when**, and **Decide first** (owner input
 - Pure sim can run N days headless in a test and produce reports.
 - Same seed + same inputs → identical output.
 
-**Decide first** (I'll propose provisional numbers)
-- Need ranges (proposal: 0–100) and daily decay rates.
-- Lifespan range for common species (proposal: ~2–4 in-game years).
-- Care-burn formula shape.
-- ~~Month names~~ **Decided:** normal names, January–December. Seasons follow the northern calendar: Spring = Mar–May, Summer = Jun–Aug, Autumn = Sep–Nov, Winter = Dec–Feb. 28 days each.
+**Decided**
+- Needs 0–100. `hunger` and `stress` are bad when high; the rest are good when high.
+- Common lifespan 672–1344 days (2–4 years). Months Jan–Dec, start March 1, Year 1.
+
+**Built** (`packages/sim/src`)
+- `types.ts` — `GameStateT`, `MinionT` (identity, appearance genes, stats + potential, personality + knowledge, traits, needs, trust, hidden lifespan budget, history), `AssignmentsT`.
+- `random.ts` — mulberry32 seeded RNG; state saved in `GameStateT.rngState`.
+- `calendar.ts` — date math from `content/calendar.ts`; scheduled-event lookup.
+- `config.ts` — every tuning number in one place (all provisional).
+- `gameState.ts` — `createNewGame`, `addNewMinion`. `minions/createMinion.ts` rolls genes, stats, personality, traits, lifespan.
+- `care/careActions.ts` — feed / pet / play during the day. Repeat falloff, food use, personality reveal.
+- `day/advanceDay.ts` — fixed pipeline: activities → hunger → energy → mood/trust → aging → health → timed (stub) → calendar → report. Save is the client's job.
+- Lifespan: hidden budget; rolling care average (10-day weight); care ≥ 0.7 ages at 1×, worse care up to 2×. Stages baby → young → adult → elder. Death is gentle and recorded.
+- Content: 10 personalities, 9 traits, 4 gender identities, 2 **placeholder** species, name pool.
+- Tests (28 sim + 6 content): RNG, calendar, care, pipeline order, determinism, save round trip, season change, overtraining, 1600-day lifespan runs.
+
+**Results from the lifespan tests**
+- Good care: minions live ~100% of their budget.
+- Neglect (fed every 3 days, no affection): ~60% of budget.
+- One missed day: < 1 day of lifespan lost.
+
+**Unfinished / notes**
+- Not wired to the client yet (that is M4).
+- Minion-to-minion relationships not modeled yet; only Headmaster trust.
+- Health can hit 0 under heavy neglect without causing death directly (it speeds aging instead). Revisit in balancing.
 
 ### M4 — Campus gameplay (`§20` Step 4)
 
@@ -310,5 +330,9 @@ Every placeholder number or design call made during development goes here, so no
 | 2026-11-03 | Camera | Pitch 0.15–1.25 rad, distance 3.5–14, start 8 | `apps/client/src/world/camera/orbitState.ts` |
 | 2026-11-03 | Controls | Space = hop (not in GDD; easy to remove) | `apps/client/src/world/input/bindings.ts` |
 | 2026-11-03 | Calendar | New game starts March 1 (first day of Spring) | `packages/sim` (M3) |
+| 2026-11-03 | Sim tuning | All numbers in `simConfig` (needs, decay, training, lifespan burn) | `packages/sim/src/config.ts` |
+| 2026-11-03 | Species | Mochling + Bramblet are placeholders (`isPlaceholder: true`) | `packages/content/src/species.ts` |
+| 2026-11-03 | Personalities/traits | Modifier values per personality/trait | `packages/content/src/personalities.ts`, `traits.ts` |
+| 2026-11-03 | Stats | Range 1–999, base ~20–30, potential 0.7–1.3× | `packages/sim/src/config.ts`, `content/species.ts` |
 | 2026-11-03 | Interaction | Radius: NPC 2.2, minion 1.8, object 1.8 | `apps/client/src/world/npc`, `world/minion`, `world/objects` |
 | 2026-11-03 | Placeholder content | Pip (greeter), sign, Mochi + their lines | `packages/content/src`, `apps/client/src/world/minion/placeholderMinions.ts` |
