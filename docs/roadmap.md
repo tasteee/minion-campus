@@ -10,8 +10,8 @@
 | # | Milestone | Status |
 |---|---|---|
 | M0 | Vision docs + roadmap | ✅ Done |
-| M1 | Project foundation | ⬜ Next — awaiting approval |
-| M2 | World interaction | ⬜ |
+| M1 | Project foundation | ✅ Done — awaiting review |
+| M2 | World interaction | ⬜ Next — awaiting approval |
 | M3 | Simulation foundation | ⬜ |
 | M4 | Campus gameplay | ⬜ |
 | M5 | Starter experience + town | ⬜ |
@@ -144,9 +144,22 @@ Each milestone lists **Build**, **Done when**, and **Decide first** (owner input
 - `pnpm test` runs (one placeholder test).
 - Pages build works.
 
-**Decide first**
-- Camera control: mouse-drag orbit vs pointer-lock? (proposal: right-drag orbit, works on trackpads)
-- Target platforms: desktop only for MVP? (proposal: yes, keyboard + mouse)
+**Decided**
+- Camera: right-drag orbit, wheel zoom.
+- Platform: desktop keyboard + mouse for MVP.
+
+**Built**
+- Workspace + strict TS. Test scene `apps/client/src/scenes/test-scene`.
+- Player: Rapier kinematic character controller (`world/player`). WASD/arrows, Shift run, Space hop, auto-step, slope limit, fall reset.
+- Camera: `world/camera` orbit state + smoothed follow.
+- Scene manager stub: `scenes/sceneManager.svelte.ts` (test scene only).
+- CI + Pages: `.github/workflows/deploy.yml` (check, test, build on PRs; deploy on `main`).
+
+**Unfinished / notes**
+- Pages needs a one-time repo setting: Settings → Pages → Source: **GitHub Actions**.
+- Bundle is ~5 MB (Rapier WASM inlined). Code-split later (M8).
+- Miniplex installed, not used until M2.
+- Player is a placeholder capsule.
 
 ### M2 — World interaction (`§20` Step 2)
 
@@ -282,4 +295,6 @@ Every placeholder number or design call made during development goes here, so no
 
 | Date | Area | Provisional decision | Where in code |
 |---|---|---|---|
-| — | — | — | — |
+| 2026-11-03 | Player movement | Walk 4, run 7.5, jump 6, gravity -20 (units/s) | `apps/client/src/world/player/playerState.ts` |
+| 2026-11-03 | Camera | Pitch 0.15–1.25 rad, distance 3.5–14, start 8 | `apps/client/src/world/camera/orbitState.ts` |
+| 2026-11-03 | Controls | Space = hop (not in GDD; easy to remove) | `apps/client/src/world/input/bindings.ts` |

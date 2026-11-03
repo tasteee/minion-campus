@@ -1,0 +1,30 @@
+{
+  "name": "@minion-campus/client",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "0.21.0",
+    "@minion-campus/content": "workspace:*",
+    "@minion-campus/sim": "workspace:*",
+    "@threlte/core": "8.7.0",
+    "@threlte/extras": "9.23.1",
+    "@threlte/rapier": "3.5.1",
+    "miniplex": "2.0.0",
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@tsconfig/svelte": "5.0.8",
+    "@types/three": "0.187.0",
+    "svelte": "5.57.3",
+    "svelte-check": "4.7.8",
+    "typescript": "5.9.3",
+    "vite": "8.3.5"
+  }
+}

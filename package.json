@@ -1,0 +1,13 @@
+{
+  "name": "minion-campus",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "pnpm --filter @minion-campus/client dev",
+    "build": "pnpm --filter @minion-campus/client build",
+    "preview": "pnpm --filter @minion-campus/client preview",
+    "test": "pnpm -r --if-present test",
+    "check": "pnpm -r --if-present check"
+  }
+}
