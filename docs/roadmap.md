@@ -360,5 +360,6 @@ Every placeholder number or design call made during development goes here, so no
 | 2026-11-03 | New game | 500 coins, 30 food, all 4 equipment pieces, 1 random placeholder starter | `sim/src/config.ts`, `client/src/state/gameActions.ts` |
 | 2026-11-03 | Campus layout | Equipment, house, tree, path positions | `apps/client/src/scenes/campus/campusLayout.ts` |
 | 2026-11-03 | Minion look | Base scale 1.35, life-stage sizes, gene → shape mapping | `apps/client/src/world/minion/minionLook.ts` |
+| 2026-11-03 | Smudge | Species added from owner art. Rarity uncommon, lifespan 840–1260, stats provisional. New campuses start with a Smudge until the questionnaire | `packages/content/src/species.ts`, `apps/client/src/state/gameActions.ts` |
 | 2026-11-03 | Interaction | Radius: NPC 2.2, minion 1.8, object 1.8 | `apps/client/src/world/npc`, `world/minion`, `world/objects` |
 | 2026-11-03 | Placeholder content | Pip (greeter), sign, Mochi + their lines | `packages/content/src`, `apps/client/src/world/minion/placeholderMinions.ts` |

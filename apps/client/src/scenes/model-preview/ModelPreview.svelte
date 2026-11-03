@@ -7,6 +7,7 @@
 	import NapMatModel from '../../world/equipment/NapMatModel.svelte'
 	import RunningTrackModel from '../../world/equipment/RunningTrackModel.svelte'
 	import { worldPalette } from '../../world/palette'
+	import SmudgePreview from './SmudgePreview.svelte'
 
 	// Dev-only art viewer: open the app with ?preview=<model>.
 
@@ -20,11 +21,17 @@
 		napMatSide: [-1.5, 0.9, 1.4],
 		napMat: [1.4, 1.5, 1.9],
 		runningTrack: [0, 7.5, 8.5],
-		chessboard: [1.4, 1.7, 1.9]
+		chessboard: [1.4, 1.7, 1.9],
+		smudge: [1.2, 1.3, 3.2],
+		smudgeWalk: [1.8, 1.1, 2.4],
+		smudgeSit: [0.6, 0.85, 2.5],
+		smudgeBack: [-1.7, 1.3, -2.1]
 	}
 
 	const cameraPosition: [number, number, number] = $derived(cameraPositions[props.modelId] ?? [3, 3, 3])
-	const lookTarget = $derived(props.modelId === 'runningTrack' ? 0 : 0.45)
+	const isSmudge = $derived(props.modelId.startsWith('smudge'))
+	const lookTarget = $derived(props.modelId === 'runningTrack' ? 0 : isSmudge ? 0.6 : 0.45)
+	const smudgeFixedPose = $derived(props.modelId === 'smudgeWalk' ? 'walk' : props.modelId === 'smudge' ? null : 'idle')
 
 	onMount(() => {
 		threlte.scene.background = new Color('#ffffff')
@@ -48,6 +55,9 @@
 {/if}
 {#if props.modelId === 'runningTrack'}
 	<RunningTrackModel />
+{/if}
+{#if isSmudge}
+	<SmudgePreview fixedPose={smudgeFixedPose} />
 {/if}
 {#if props.modelId === 'chessboard'}
 	<ChessboardModel />
