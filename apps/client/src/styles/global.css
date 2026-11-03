@@ -19,3 +19,18 @@ body {
 	font-family: var(--font-body);
 	font-size: var(--font-size-body);
 }
+
+.interaction-key,
+.dialogue-key,
+.minion-menu-key {
+	display: inline-grid;
+	place-items: center;
+	min-width: 22px;
+	height: 22px;
+	padding: 0 var(--space-1);
+	background: var(--color-ink);
+	border-radius: var(--radius-small);
+	color: var(--color-paper);
+	font-size: var(--font-size-small);
+	font-weight: 700;
+}

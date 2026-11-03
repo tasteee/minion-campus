@@ -1,0 +1,62 @@
+.dialogue-box {
+	position: absolute;
+	left: 50%;
+	bottom: var(--space-6);
+	width: min(560px, calc(100% - var(--space-8)));
+	transform: translateX(-50%);
+	padding: var(--space-4) var(--space-5);
+	background: var(--color-paper);
+	border: 2px solid var(--color-ink);
+	border-radius: var(--radius-large);
+}
+
+.dialogue-speaker {
+	display: inline-block;
+	margin-bottom: var(--space-2);
+	padding: var(--space-1) var(--space-3);
+	background: var(--color-accent);
+	border-radius: var(--radius-small);
+	font-weight: 700;
+}
+
+.dialogue-text {
+	margin: 0 0 var(--space-3);
+	line-height: 1.5;
+}
+
+.dialogue-choices {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dialogue-choice,
+.dialogue-continue {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-3);
+	background: transparent;
+	border: 1px solid var(--color-line);
+	border-radius: var(--radius-small);
+	color: var(--color-ink);
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+
+.dialogue-choice {
+	width: 100%;
+}
+
+.dialogue-continue {
+	margin-left: auto;
+}
+
+.dialogue-choice:hover,
+.dialogue-continue:hover {
+	background: var(--color-highlight);
+}

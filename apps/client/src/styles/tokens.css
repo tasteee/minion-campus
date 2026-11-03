@@ -4,6 +4,8 @@
 	--color-paper: #fff8ee;
 	--color-sky: #bfe3f2;
 	--color-accent: #ff9fb6;
+	--color-line: #e6d8c6;
+	--color-highlight: #ffeedd;
 
 	--font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
 	--font-size-small: 13px;
@@ -13,7 +15,11 @@
 	--space-2: 8px;
 	--space-3: 12px;
 	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-8: 32px;
 
+	--radius-large: 16px;
 	--radius-medium: 12px;
 	--radius-small: 6px;
 }
