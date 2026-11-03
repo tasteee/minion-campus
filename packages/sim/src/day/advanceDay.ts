@@ -33,7 +33,7 @@ const addSeasonChangeEntry = (context: DayContextT, report: DayReportT) => {
 	context.report.add({ kind: 'calendar', tone: 'info', minionId: null, message: `${seasonName} has arrived on campus.` })
 }
 
-export const advanceDay = (state: GameStateT, assignments: AssignmentsT) => {
+export const advanceDay = (state: GameStateT, assignments: AssignmentsT = state.plannedAssignments) => {
 	const draft = cloneState(state)
 	const rng = createRng(draft.rngState)
 

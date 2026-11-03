@@ -6,6 +6,11 @@
 	--color-accent: #ff9fb6;
 	--color-line: #e6d8c6;
 	--color-highlight: #ffeedd;
+	--color-good: #9fd88b;
+	--color-butter: #f8e2a6;
+	--color-warning: #ffb27a;
+	--color-sad: #b9a3e3;
+	--color-scrim: rgba(59, 47, 74, 0.35);
 
 	--font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
 	--font-size-small: 13px;

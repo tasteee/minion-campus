@@ -2,11 +2,13 @@
 // Needs run 0–100. hunger and stress are "bad when high"; the rest are "good when high".
 
 export const simConfig = {
-	schemaVersion: 1,
+	schemaVersion: 2,
 
 	newGame: {
 		money: 500,
-		food: 10
+		// Generous until the town shop exists (M5).
+		food: 30,
+		equipmentIds: ['exerciseMachine', 'chessboard', 'runningTrack', 'napMat']
 	},
 
 	needs: {
@@ -32,6 +34,12 @@ export const simConfig = {
 		playAmount: 8,
 		// Each repeat of the same action today is worth this much of the last.
 		repeatFalloff: 0.6
+	},
+
+	// Care beyond these counts per day has no effect: the minion is content.
+	careDailyLimits: {
+		pet: 3,
+		play: 2
 	},
 
 	play: {
@@ -70,8 +78,7 @@ export const simConfig = {
 	activities: {
 		idle: { energy: -5, happiness: 0, stress: -2, affection: 0 },
 		rest: { energy: 20, happiness: 0, stress: -10, affection: 0 },
-		play: { energy: -15, happiness: 12, stress: -6, affection: 4 },
-		train: { energy: -30, happiness: -2, stress: 8, affection: 0 }
+		play: { energy: -15, happiness: 12, stress: -6, affection: 4 }
 	},
 
 	training: {
@@ -102,8 +109,17 @@ export const simConfig = {
 	},
 
 	personality: {
-		revealPerInteraction: 0.05
+		revealPerInteraction: 0.05,
+		hintAt: 0.3,
+		fullAt: 0.8
+	},
+
+	// Thresholds for the End Day review. They only warn; they never block.
+	review: {
+		hungryAt: 60,
+		lonelyBelow: 30,
+		tiredBelow: 30
 	}
 } as const
 
-export type ActivityIdT = keyof typeof simConfig.activities
+export type BasicActivityIdT = keyof typeof simConfig.activities

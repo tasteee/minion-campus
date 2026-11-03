@@ -8,6 +8,7 @@ export type InteractTargetT =
 	| { kind: 'npc'; npcId: string }
 	| { kind: 'minion'; minionId: string }
 	| { kind: 'object'; objectId: string }
+	| { kind: 'equipment'; equipmentInstanceId: string }
 
 export type InteractableT = {
 	target: InteractTargetT

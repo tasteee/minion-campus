@@ -6,6 +6,8 @@
 	import { registerEntity } from '../ecs/ecsWorld'
 	import FocusMarker from '../interaction/FocusMarker.svelte'
 	import { worldPalette } from '../palette'
+	import Ink from '../toon/Ink.svelte'
+	import ToonMaterial from '../toon/ToonMaterial.svelte'
 
 	type PropsT = {
 		objectId: string
@@ -36,11 +38,13 @@
 	</T.Group>
 	<T.Mesh position.y={0.6} castShadow>
 		<T.BoxGeometry args={[0.15, 1.2, 0.15]} />
-		<T.MeshStandardMaterial color={worldPalette.wood} roughness={1} />
+		<ToonMaterial color={worldPalette.wood} />
+		<Ink thickness={0.015} />
 	</T.Mesh>
 	<T.Mesh position.y={1.15} castShadow>
 		<T.BoxGeometry args={[1, 0.5, 0.1]} />
-		<T.MeshStandardMaterial color={worldPalette.woodLight} roughness={1} />
+		<ToonMaterial color={worldPalette.woodLight} />
+		<Ink thickness={0.015} />
 	</T.Mesh>
 	<FocusMarker {entityId} height={1.8} />
 </T.Group>

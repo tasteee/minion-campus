@@ -1,5 +1,7 @@
 import { advanceDialogue, chooseDialogueOption, closeDialogue } from '../../ui/dialogue/dialogueState.svelte'
-import { closeMinionMenu, performMinionActionAt } from '../../ui/minion-menu/minionMenuState.svelte'
+import { closeModal } from '../../ui/modals/modalState.svelte'
+import { performPanelCareAt } from '../../ui/minion-panel/minionPanelActions'
+import { closeMinionPanel } from '../../ui/minion-panel/minionPanelState.svelte'
 import { interactWithFocused } from './interact'
 import { interactionState } from './interactionState.svelte'
 
@@ -19,20 +21,27 @@ const handleDialogueKey = (event: KeyboardEvent) => {
 	if (choiceIndex !== null) chooseDialogueOption(choiceIndex)
 }
 
-const handleMinionMenuKey = (event: KeyboardEvent) => {
-	if (event.code === 'Escape') return closeMinionMenu()
+const handleMinionPanelKey = (event: KeyboardEvent) => {
+	if (event.code === 'Escape' || event.code === 'KeyE') return closeMinionPanel()
 	const actionIndex = getNumberKeyIndex(event.code)
-	if (actionIndex !== null) performMinionActionAt(actionIndex)
+	if (actionIndex !== null) performPanelCareAt(actionIndex)
+}
+
+const handleModalKey = (event: KeyboardEvent) => {
+	if (event.code === 'Escape') closeModal()
 }
 
 const handleFreeKey = (event: KeyboardEvent) => {
 	if (event.code === 'KeyE') interactWithFocused()
 }
 
+const isTypingInField = (event: KeyboardEvent) => event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement
+
 const handleKeyDown = (event: KeyboardEvent) => {
-	if (event.repeat) return
+	if (event.repeat || isTypingInField(event)) return
 	if (interactionState.mode === 'dialogue') return handleDialogueKey(event)
-	if (interactionState.mode === 'minionMenu') return handleMinionMenuKey(event)
+	if (interactionState.mode === 'minionPanel') return handleMinionPanelKey(event)
+	if (interactionState.mode === 'modal') return handleModalKey(event)
 	handleFreeKey(event)
 }
 

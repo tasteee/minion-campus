@@ -9,7 +9,7 @@ export const playerSettings = {
 	turnSharpness: 12,
 	capsuleHalfHeight: 0.45,
 	capsuleRadius: 0.4,
-	spawnPosition: { x: 0, y: 2, z: 0 }
+	spawnPosition: { x: 0, y: 1.5, z: 9 }
 } as const
 
 export const playerState = {

@@ -30,6 +30,7 @@ const updateLifeStage = (context: DayContextT, minion: MinionT) => {
 const passAway = (context: DayContextT, minion: MinionT) => {
 	minion.isAlive = false
 	minion.diedOnDay = context.endedDate.absoluteDay
+	delete context.state.plannedAssignments[minion.id]
 	const message = `${minion.name} passed away peacefully in their sleep.`
 	minion.history.push({ absoluteDay: context.endedDate.absoluteDay, kind: 'died', message })
 	context.report.add({ kind: 'died', tone: 'sad', minionId: minion.id, message })

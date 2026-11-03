@@ -4,6 +4,8 @@
 	import { onDestroy } from 'svelte'
 	import type { Group } from 'three'
 	import { worldPalette } from '../palette'
+	import Ink from '../toon/Ink.svelte'
+	import ToonMaterial from '../toon/ToonMaterial.svelte'
 	import { playerSettings, playerState } from './playerState'
 	import { getDesiredDirection, getMoveSpeed, updateFacingAngle, updateVerticalSpeed } from './playerMovement'
 
@@ -83,10 +85,11 @@
 <T.Group bind:ref={visualGroup}>
 	<T.Mesh castShadow>
 		<T.CapsuleGeometry args={[playerSettings.capsuleRadius, playerSettings.capsuleHalfHeight * 2, 8, 16]} />
-		<T.MeshStandardMaterial color={worldPalette.player} roughness={0.8} />
+		<ToonMaterial color={worldPalette.player} />
+		<Ink thickness={0.02} />
 	</T.Mesh>
 	<T.Mesh position={[0, 0.35, playerSettings.capsuleRadius - 0.05]} castShadow>
 		<T.SphereGeometry args={[0.1, 16, 16]} />
-		<T.MeshStandardMaterial color={worldPalette.playerNose} />
+		<ToonMaterial color={worldPalette.playerNose} />
 	</T.Mesh>
 </T.Group>

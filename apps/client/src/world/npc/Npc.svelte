@@ -9,6 +9,8 @@
 	import { interactionState } from '../interaction/interactionState.svelte'
 	import { turnToward } from '../interaction/turnToward'
 	import { worldPalette } from '../palette'
+	import Ink from '../toon/Ink.svelte'
+	import ToonMaterial from '../toon/ToonMaterial.svelte'
 	import { playerState } from '../player/playerState'
 
 	type PropsT = {
@@ -50,19 +52,21 @@
 	<T.Group bind:ref={turnGroup}>
 		<T.Mesh position.y={0.85} castShadow>
 			<T.CapsuleGeometry args={[0.4, 0.9, 8, 16]} />
-			<T.MeshStandardMaterial color={props.bodyColor} roughness={0.8} />
+			<ToonMaterial color={props.bodyColor} />
+			<Ink thickness={0.02} />
 		</T.Mesh>
 		<T.Mesh position.y={1.9} castShadow>
 			<T.ConeGeometry args={[0.38, 0.6, 20]} />
-			<T.MeshStandardMaterial color={props.hatColor} roughness={0.8} />
+			<ToonMaterial color={props.hatColor} />
+			<Ink thickness={0.02} />
 		</T.Mesh>
 		<T.Mesh position={[0.13, 1.3, 0.36]}>
 			<T.SphereGeometry args={[0.06, 12, 12]} />
-			<T.MeshStandardMaterial color={worldPalette.eye} />
+			<ToonMaterial color={worldPalette.eye} />
 		</T.Mesh>
 		<T.Mesh position={[-0.13, 1.3, 0.36]}>
 			<T.SphereGeometry args={[0.06, 12, 12]} />
-			<T.MeshStandardMaterial color={worldPalette.eye} />
+			<ToonMaterial color={worldPalette.eye} />
 		</T.Mesh>
 	</T.Group>
 	<FocusMarker {entityId} height={2.6} />

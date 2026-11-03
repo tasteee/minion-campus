@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cloneState } from '../cloneState'
 import { simConfig } from '../config'
+import { advanceDay } from '../day/advanceDay'
 import { findMinion } from '../gameState'
 import { createGameWithMinion } from '../test/testHelpers'
 import { feedMinion, petMinion, playWithMinion } from './careActions'
@@ -45,6 +46,32 @@ describe('care actions', () => {
 		const secondGain = second.outcome.needChanges.affection ?? 0
 		expect(firstGain).toBeGreaterThan(0)
 		expect(secondGain).toBeLessThan(firstGain)
+	})
+
+	it('stops helping after the daily limit', () => {
+		const setup = createGameWithMinion()
+		let state = setup.nextState
+
+		for (let index = 0; index < simConfig.careDailyLimits.pet; index += 1) {
+			state = petMinion(state, setup.minionId).nextState
+		}
+
+		const extra = petMinion(state, setup.minionId)
+		expect(extra.outcome.isSuccess).toBe(false)
+		expect(extra.outcome.failureReason).toBe('dailyLimit')
+		expect(extra.nextState).toBe(state)
+	})
+
+	it('resets the daily limit on a new day', () => {
+		const setup = createGameWithMinion()
+		let state = setup.nextState
+
+		for (let index = 0; index < simConfig.careDailyLimits.play; index += 1) {
+			state = playWithMinion(state, setup.minionId).nextState
+		}
+
+		state = advanceDay(state).nextState
+		expect(playWithMinion(state, setup.minionId).outcome.isSuccess).toBe(true)
 	})
 
 	it('never mutates the input state', () => {
